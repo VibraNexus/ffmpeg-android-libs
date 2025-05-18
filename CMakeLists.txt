@@ -60,7 +60,7 @@ ExternalProject_Add(ffmpeg
     --enable-shared
     --disable-static
     --extra-cflags=-fPIC
-    --extra-ldflags=-fuse-ld=lld;-Wl,--gc-sections;-Wl,-z,max-page-size=${MAX_PAGE_SIZE}
+    "--extra-ldflags=-fuse-ld=lld -Wl,--gc-sections -Wl,-z,max-page-size=${MAX_PAGE_SIZE}"
     --enable-protocol=file
     --enable-decoder=opus,vorbis,aac
     --enable-encoder=mp3,flac,aac
