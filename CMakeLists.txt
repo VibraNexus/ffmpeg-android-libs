@@ -81,7 +81,14 @@ ExternalProject_Add(ffmpeg
     --enable-version3
     --enable-nonfree
 
-    --enable-all
+    --enable-protocol=all
+    --enable-demuxer=all
+    --enable-muxer=all
+    --enable-parser=all
+    --enable-bsfs=all
+    --enable-decoder=all
+    --enable-encoder=all
+    --enable-filter=all
     --extra-cflags=-fPIC
     "--extra-ldflags=-fuse-ld=lld -Wl,--gc-sections -Wl,-z,max-page-size=${MAX_PAGE_SIZE}"
     --ar=${NDK_TOOLCHAIN}/bin/llvm-ar
