@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 project(ffmpeg_android_minimal NONE)
+message(STATUS "CMake version: ${CMAKE_VERSION}")
+message(STATUS "Android NDK: ${CMAKE_ANDROID_NDK}")
 
 # Ensure this is an Android cross‑compile
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "Android")
@@ -9,6 +11,7 @@ endif()
 # Pull in module to enable flexible page sizes and set linker flags
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 include(AndroidFlexPages)
+message(STATUS "Flexible page sizes: ${ANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES}, max-page-size=${MAX_PAGE_SIZE}")
 
 # ExternalProject to fetch & build FFmpeg
 include(ExternalProject)
@@ -20,6 +23,7 @@ set(FFMPEG_SOURCE_DIR "${CMAKE_BINARY_DIR}/ffmpeg-src")
 set(FFMPEG_INSTALL_DIR "${CMAKE_BINARY_DIR}/ffmpeg-install")
 
 # Determine FFmpeg configure triples based on ABI
+message(STATUS "Building for ABI: ${CMAKE_ANDROID_ARCH_ABI}")
 if(CMAKE_ANDROID_ARCH_ABI STREQUAL "arm64-v8a")
   set(FFMPEG_TARGET_HOST aarch64-linux-android)
   set(FFMPEG_ARCH aarch64)
@@ -37,6 +41,7 @@ set(NDK_TOOLCHAIN "${CMAKE_ANDROID_NDK}/toolchains/llvm/prebuilt/${CMAKE_HOST_SY
 set(FFMPEG_CROSS_PREFIX "${NDK_TOOLCHAIN}/bin/${FFMPEG_TARGET_HOST}-")
 set(FFMPEG_CC "${NDK_TOOLCHAIN}/bin/${FFMPEG_TARGET_HOST}${CMAKE_SYSTEM_VERSION}-clang")
 
+message(STATUS "Configuring ExternalProject ffmpeg...")
 ExternalProject_Add(ffmpeg
   PREFIX               ${CMAKE_BINARY_DIR}/ffmpeg
   GIT_REPOSITORY       ${FFMPEG_GIT_REPO}
