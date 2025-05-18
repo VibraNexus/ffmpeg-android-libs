@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.21)
 project(ffmpeg_android_minimal NONE)
 message(STATUS "CMake version: ${CMAKE_VERSION}")
 message(STATUS "Android NDK: ${CMAKE_ANDROID_NDK}")
