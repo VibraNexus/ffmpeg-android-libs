@@ -48,7 +48,7 @@ jobs:
             cmake .. \
               -G "Unix Makefiles" \
               -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake \
-              -DANDROID_PLATFORM=android-21 \
+              -DANDROID_PLATFORM=21 \
               -DCMAKE_SYSTEM_VERSION=21 \
               -DMAX_PAGE_SIZE=16384 \
               -DANDROID_ABI=$ABI \
