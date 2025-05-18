@@ -50,30 +50,29 @@ ExternalProject_Add(ffmpeg
   BINARY_DIR           ${FFMPEG_SOURCE_DIR}/build
   INSTALL_DIR          ${FFMPEG_INSTALL_DIR}
   UPDATE_COMMAND       ""
-  CONFIGURE_COMMAND    \
-    ${FFMPEG_SOURCE_DIR}/configure  \
-      --prefix=${FFMPEG_INSTALL_DIR}  \
-      --target-os=android            \
-      --arch=${FFMPEG_ARCH}          \
-      --cpu=${FFMPEG_CPU}            \
-      --enable-cross-compile         \
-      --cross-prefix=${FFMPEG_CROSS_PREFIX} \
-      --sysroot=${NDK_TOOLCHAIN}/sysroot \
-      --cc=${FFMPEG_CC}              \
-      --disable-everything           \
-      --enable-small                 \
-      --enable-shared                \
-      --disable-static               \
-      --extra-cflags="-fPIC"        \
-      --extra-ldflags="-fuse-ld=lld -Wl,--gc-sections -Wl,-z,max-page-size=${MAX_PAGE_SIZE}" \
-      --enable-protocol=file         \
-      --enable-decoder=opus,vorbis,aac  \
-      --enable-encoder=mp3,flac,aac      \
-      --enable-demuxer=webm,matroska,ogg \
-      --enable-muxer=mp3,flac,ipod       \
-  BUILD_COMMAND        make -j${CMAKE_JOB_POOL_DEFAULT} \
+  CONFIGURE_COMMAND ${FFMPEG_SOURCE_DIR}/configure
+      --prefix=${FFMPEG_INSTALL_DIR}  
+      --target-os=android            
+      --arch=${FFMPEG_ARCH}          
+      --cpu=${FFMPEG_CPU}            
+      --enable-cross-compile         
+      --cross-prefix=${FFMPEG_CROSS_PREFIX} 
+      --sysroot=${NDK_TOOLCHAIN}/sysroot 
+      --cc=${FFMPEG_CC}              
+      --disable-everything           
+      --enable-small                 
+      --enable-shared                
+      --disable-static               
+      --extra-cflags="-fPIC"        
+      --extra-ldflags="-fuse-ld=lld -Wl,--gc-sections -Wl,-z,max-page-size=${MAX_PAGE_SIZE}" 
+      --enable-protocol=file         
+      --enable-decoder=opus,vorbis,aac  
+      --enable-encoder=mp3,flac,aac      
+      --enable-demuxer=webm,matroska,ogg 
+      --enable-muxer=mp3,flac,ipod       
+  BUILD_COMMAND        make -j${CMAKE_JOB_POOL_DEFAULT} 
     WORKING_DIRECTORY   ${FFMPEG_SOURCE_DIR}/build
-  INSTALL_COMMAND      make install      \
+  INSTALL_COMMAND      make install      
     WORKING_DIRECTORY   ${FFMPEG_SOURCE_DIR}/build
 )
 
