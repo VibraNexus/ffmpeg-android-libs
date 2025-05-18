@@ -75,17 +75,15 @@ ExternalProject_Add(ffmpeg
     --cross-prefix=${FFMPEG_CROSS_PREFIX}
     --sysroot=${NDK_TOOLCHAIN}/sysroot
     --cc=${FFMPEG_CC}
-    --disable-everything
-    --enable-small
     --enable-shared
     --disable-static
+    --enable-gpl
+    --enable-version3
+    --enable-nonfree
+
+    --enable-all
     --extra-cflags=-fPIC
     "--extra-ldflags=-fuse-ld=lld -Wl,--gc-sections -Wl,-z,max-page-size=${MAX_PAGE_SIZE}"
-    --enable-protocol=file
-    --enable-decoder=opus,vorbis,aac
-    --enable-encoder=mp3,flac,aac
-    --enable-demuxer=webm,matroska,ogg
-    --enable-muxer=mp3,flac,ipod
     --ar=${NDK_TOOLCHAIN}/bin/llvm-ar
     --ranlib=${NDK_TOOLCHAIN}/bin/llvm-ranlib
     --nm=${NDK_TOOLCHAIN}/bin/llvm-nm
