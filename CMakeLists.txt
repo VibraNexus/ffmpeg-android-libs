@@ -85,7 +85,6 @@ ExternalProject_Add(ffmpeg
     --enable-demuxer=all
     --enable-muxer=all
     --enable-parser=all
-    --enable-bsfs=all
     --enable-decoder=all
     --enable-encoder=all
     --enable-filter=all
