@@ -22,9 +22,9 @@ message(STATUS "Flexible page sizes: ${ANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES}, max
 include(ExternalProject)
 
 # FFmpeg source comes from pre-clone in repo root
-set(FFMPEG_SOURCE_DIR "${CMAKE_SOURCE_DIR}/ffmpeg")
-set(FFMPEG_INSTALL_DIR "${CMAKE_BINARY_DIR}/ffmpeg-install")
-set(FFMPEG_BUILD_DIR   "${FFMPEG_SOURCE_DIR}/build")
+set(FFMPEG_SOURCE_DIR  "${CMAKE_SOURCE_DIR}/ffmpeg")
+set(FFMPEG_INSTALL_DIR "${CMAKE_BINARY_DIR}/${CMAKE_ANDROID_ARCH_ABI}/ffmpeg-install")
+set(FFMPEG_BUILD_DIR   "${CMAKE_BINARY_DIR}/${CMAKE_ANDROID_ARCH_ABI}/ffmpeg-build")
 
 message(STATUS "Building for ABI: ${CMAKE_ANDROID_ARCH_ABI}")
 if(CMAKE_ANDROID_ARCH_ABI STREQUAL "arm64-v8a")
@@ -96,9 +96,11 @@ ExternalProject_Add(ffmpeg
 
 # Collect .so into output/<ABI>
 add_custom_command(TARGET ffmpeg POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/output/${CMAKE_ANDROID_ARCH_ABI}"
-  COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${FFMPEG_INSTALL_DIR}/lib"
-    "${CMAKE_BINARY_DIR}/output/${CMAKE_ANDROID_ARCH_ABI}"
+        COMMAND ${CMAKE_COMMAND} -E make_directory
+        "${CMAKE_BINARY_DIR}/output/${CMAKE_ANDROID_ARCH_ABI}"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${FFMPEG_INSTALL_DIR}/lib"
+        "${CMAKE_BINARY_DIR}/output/${CMAKE_ANDROID_ARCH_ABI}"
 )
+
 add_custom_target(collect ALL DEPENDS ffmpeg)
