@@ -68,13 +68,8 @@ jobs:
               # show the LOAD entries
               readelf -l "$so" | awk '/^ *LOAD/ { print "   " $0 }'
               # flag any whose p_align != 0x4000
-              misaligned=$(
-                readelf -l "$so" \
-                  | tr '\n' ' ' \
-                  | sed $'s/ LOAD/\\\nLOAD/g' \
-                  | awk '/^LOAD/ && $NF != "0x4000"'
-              )
-
+              misaligned=$(readelf -l "$so" \
+                | awk '/^ *LOAD/ && $NF!="0x4000"')
               if [ -n "$misaligned" ]; then
                 echo "::error ::Misaligned LOAD segments in $so:"
                 echo "$misaligned" | sed 's/^/    /'
