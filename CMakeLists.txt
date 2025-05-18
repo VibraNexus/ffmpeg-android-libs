@@ -40,7 +40,16 @@ else()
 endif()
 
 # NDK toolchain paths
-set(NDK_TOOLCHAIN "${CMAKE_ANDROID_NDK}/toolchains/llvm/prebuilt/${CMAKE_HOST_SYSTEM_NAME}-${CMAKE_HOST_SYSTEM_PROCESSOR}")
+# Prefer the tag exported by the Android toolchain file:
+if (DEFINED ANDROID_HOST_TAG)
+  set(NDK_TOOLCHAIN "${CMAKE_ANDROID_NDK}/toolchains/llvm/prebuilt/${ANDROID_HOST_TAG}")
+else()
+  # Fallback: lowercase “Linux-x86_64” → “linux-x86_64”
+  string(TOLOWER "${CMAKE_HOST_SYSTEM_NAME}-${CMAKE_HOST_SYSTEM_PROCESSOR}" NDK_HOST_TAG)
+  set(NDK_TOOLCHAIN "${CMAKE_ANDROID_NDK}/toolchains/llvm/prebuilt/${NDK_HOST_TAG}")
+endif()
+message(STATUS "NDK_TOOLCHAIN = ${NDK_TOOLCHAIN}")
+
 message(STATUS "NDK_TOOLCHAIN = ${NDK_TOOLCHAIN}")
 message(STATUS "Cross prefix base = ${NDK_TOOLCHAIN}/bin/${FFMPEG_TARGET_HOST}-")
 set(FFMPEG_CROSS_PREFIX "${NDK_TOOLCHAIN}/bin/${FFMPEG_TARGET_HOST}-")
