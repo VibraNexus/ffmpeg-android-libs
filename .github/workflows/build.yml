@@ -16,10 +16,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Set up Android NDK r29+
+      - name: Set up Android NDK r28+
         uses: nttld/setup-ndk@v1
         with:
-          ndk-version: r29b
+          ndk-version: r28b
 
       - name: Install CMake
         run: |
