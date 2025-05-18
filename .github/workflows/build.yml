@@ -25,12 +25,10 @@ jobs:
       - name: Export NDK path
         run: echo "ANDROID_NDK_HOME=${{ steps.setup-ndk.outputs.ndk-path }}" >> $GITHUB_ENV
 
-
       - name: Install CMake and build tools
         run: |
           sudo apt-get update
           sudo apt-get install -y cmake build-essential
-      
 
       - name: Fetch FFmpeg sources
         run: |
@@ -62,23 +60,40 @@ jobs:
         run: |
           echo "Verifying ELF p_align for 16 KB support…"
           failed=false
+
           for DIR in build_arm64-v8a build_armeabi-v7a; do
-            for so in $DIR/output/*/*.so; do
+            for so in "$DIR"/output/*/*.so; do
               echo "→ $so"
-              # show the LOAD entries
-              readelf -l "$so" | awk '/^ *LOAD/ { print "   " $0 }'
-              # flag any whose p_align != 0x4000
-              misaligned=$(readelf -l "$so" \
-                | awk '/^ *LOAD/ && $NF!="0x4000"')
-              if [ -n "$misaligned" ]; then
-                echo "::error ::Misaligned LOAD segments in $so:"
-                echo "$misaligned" | sed 's/^/    /'
+              readelf -l "$so" \
+                | awk '
+                    # On seeing the start of a LOAD entry…
+                    /^ *LOAD / {
+                      hdr = $0
+                      # if this line has fewer than 8 fields, read the next line too
+                      if (NF < 8) {
+                        getline hdr2
+                        hdr = hdr " " hdr2
+                      }
+                      # split into fields so f[n] is the final (Align) field
+                      n = split(hdr, f, /[[:space:]]+/)
+                      if (f[n] != "0x4000") {
+                        print "    Misaligned: " hdr
+                        failed = 1
+                      } else {
+                        print "    ✅ " hdr
+                      }
+                    }
+                  END {
+                    exit failed
+                  }'
+
+              if [ $? -ne 0 ]; then
                 failed=true
-              else
-                echo "  ✅ OK"
               fi
             done
           done
+
+          # fail the step if any .so was misaligned
           $([[ $failed = true ]] && exit 1 || exit 0)
 
       - name: Upload .so artifacts
