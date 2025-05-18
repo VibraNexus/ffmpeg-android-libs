@@ -34,11 +34,13 @@ else()
 endif()
 
 # NDK toolchain paths
+set(NDK_TOOLCHAIN "${CMAKE_ANDROID_NDK}/toolchains/llvm/prebuilt/${CMAKE_HOST_SYSTEM_NAME}-${CMAKE_HOST_SYSTEM_PROCESSOR}")
+message(STATUS "NDK_TOOLCHAIN = ${NDK_TOOLCHAIN}")
+message(STATUS "Cross prefix base = ${NDK_TOOLCHAIN}/bin/${FFMPEG_TARGET_HOST}-")
 set(FFMPEG_CROSS_PREFIX "${NDK_TOOLCHAIN}/bin/${FFMPEG_TARGET_HOST}-")
-
-# hard-code instead:
-set(NDK_TOOLCHAIN "/opt/hostedtoolcache/ndk/r28b/x64/toolchains/llvm/prebuilt/linux-x86_64")
-set(FFMPEG_CC       "${NDK_TOOLCHAIN}/bin/aarch64-linux-android21-clang")
+message(STATUS "FFMPEG_CROSS_PREFIX = ${FFMPEG_CROSS_PREFIX}")
+set(FFMPEG_CC "${NDK_TOOLCHAIN}/bin/${FFMPEG_TARGET_HOST}${CMAKE_ANDROID_API}-clang")
+message(STATUS "FFMPEG_CC = ${FFMPEG_CC}")
 
 message(STATUS "Configuring ExternalProject ffmpeg...")
 ExternalProject_Add(ffmpeg
