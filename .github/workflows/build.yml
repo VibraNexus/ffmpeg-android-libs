@@ -31,6 +31,8 @@ jobs:
           git clone https://github.com/FFmpeg/FFmpeg.git ffmpeg
 
       - name: Build for each ABI
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
         run: |
           ABIS=(arm64-v8a armeabi-v7a)
           for ABI in "${ABIS[@]}"; do
@@ -47,7 +49,7 @@ jobs:
               -DANDROID_ABI=$ABI \
               -DCMAKE_BUILD_TYPE=Release
 
-            cmake --build . -- -j$(nproc)
+            cmake --build . -- -j$(nproc) VERBOSE=1
 
             cd ..
           done
