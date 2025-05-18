@@ -65,12 +65,14 @@ jobs:
           for DIR in build_arm64-v8a build_armeabi-v7a; do
             for so in $DIR/output/*/*.so; do
               echo "→ $so"
-              readelf -l "$so" | grep LOAD | sed 's/^/   /'
-              bad=$(readelf -l "$so" \
-                | awk '/^ *LOAD/ {hdr=$0; getline; if ($NF!="0x4000") print hdr "\n" $0}')
-              if [ -n "$bad" ]; then
-                echo "::error ::Misaligned segments in $so:"
-                echo "$bad" | sed 's/^/    /'
+              # show the LOAD entries
+              readelf -l "$so" | awk '/^ *LOAD/ { print "   " $0 }'
+              # flag any whose p_align != 0x4000
+              misaligned=$(readelf -l "$so" \
+                | awk '/^ *LOAD/ && $NF!="0x4000"')
+              if [ -n "$misaligned" ]; then
+                echo "::error ::Misaligned LOAD segments in $so:"
+                echo "$misaligned" | sed 's/^/    /'
                 failed=true
               else
                 echo "  ✅ OK"
