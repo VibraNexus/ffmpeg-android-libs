@@ -86,6 +86,10 @@ ExternalProject_Add(ffmpeg
     --enable-encoder=mp3,flac,aac
     --enable-demuxer=webm,matroska,ogg
     --enable-muxer=mp3,flac,ipod
+    --ar=${NDK_TOOLCHAIN}/bin/llvm-ar
+    --ranlib=${NDK_TOOLCHAIN}/bin/llvm-ranlib
+    --nm=${NDK_TOOLCHAIN}/bin/llvm-nm
+    --strip=${NDK_TOOLCHAIN}/bin/llvm-strip
   BUILD_COMMAND     make -j${CMAKE_JOB_POOL_DEFAULT}
   INSTALL_COMMAND   make install
 )
