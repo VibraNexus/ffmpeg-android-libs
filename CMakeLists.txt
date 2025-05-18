@@ -50,7 +50,6 @@ else()
 endif()
 message(STATUS "NDK_TOOLCHAIN = ${NDK_TOOLCHAIN}")
 
-message(STATUS "NDK_TOOLCHAIN = ${NDK_TOOLCHAIN}")
 message(STATUS "Cross prefix base = ${NDK_TOOLCHAIN}/bin/${FFMPEG_TARGET_HOST}-")
 set(FFMPEG_CROSS_PREFIX "${NDK_TOOLCHAIN}/bin/${FFMPEG_TARGET_HOST}-")
 message(STATUS "FFMPEG_CROSS_PREFIX = ${FFMPEG_CROSS_PREFIX}")
@@ -88,9 +87,7 @@ ExternalProject_Add(ffmpeg
     --enable-demuxer=webm,matroska,ogg
     --enable-muxer=mp3,flac,ipod
   BUILD_COMMAND     make -j${CMAKE_JOB_POOL_DEFAULT}
-    WORKING_DIRECTORY ${FFMPEG_BUILD_DIR}
   INSTALL_COMMAND   make install
-    WORKING_DIRECTORY ${FFMPEG_BUILD_DIR}
 )
 
 # Collect .so into output/<ABI>
